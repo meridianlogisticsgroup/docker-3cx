@@ -3,9 +3,8 @@ FROM debian:9
 ENV container docker
 ENV DEBIAN_FRONTEND noninteractive
 
-# solving annoying debian network problems
-RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf \
-    && apt-get update -y \
+# Avoid modifying /etc/resolv.conf
+RUN apt-get update -y \
     && apt-get install -y \
         gnupg2 \
         systemd \
@@ -16,5 +15,3 @@ RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf \
         3cxpbx \
         net-tools \
     && rm -rf /var/lib/apt/lists/*
-
-# && wget -O- http://downloads-global.3cx.com/downloads/3cxpbx/public.key | apt-key add - \
