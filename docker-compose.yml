@@ -5,9 +5,17 @@ services:
     image: izerxyz/3cx:latest
     container_name: 3cx
     restart: unless-stopped
-    network_mode: host
-    environment:
-      - TZ=America/Vancouver
+    ports:
+      - "5001:5001/tcp"
+      - "5015:5015/tcp"
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "5061:5061/tcp"
+      - "5090:5090/tcp"
+      - "5090:5090/udp"
+      - "9000-10999:9000-10999/udp"
+    networks:
+      - voip
     tmpfs:
       - /tmp
       - /run
@@ -17,6 +25,9 @@ services:
       - 3cx_var:/var/lib/3cxpbx
       - 3cx_etc:/etc/3cxpbx
       - 3cx_mnt:/mnt/3cx
+
+networks:
+  voip:
 
 volumes:
   3cx_var:
