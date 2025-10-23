@@ -1,13 +1,10 @@
+version: "3.9"
+
 services:
   3cx:
     image: izerxyz/3cx:latest
     container_name: 3cx
     restart: unless-stopped
-    privileged: true
-    cgroupns: host
-    environment:
-      - TZ=America/Vancouver
-      - container=docker
     ports:
       - "5001:5001/tcp"
       - "5015:5015/tcp"
@@ -24,7 +21,7 @@ services:
       - /run
       - /run/lock
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - 3cx_var:/var/lib/3cxpbx
       - 3cx_etc:/etc/3cxpbx
       - 3cx_mnt:/mnt/3cx
