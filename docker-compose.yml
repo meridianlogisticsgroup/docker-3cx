@@ -2,15 +2,12 @@ version: "3.9"
 
 services:
   3cx:
-    image: izerxyz/3cx:latest   # or pin a tag from Docker Hub
+    image: izerxyz/3cx:latest
     container_name: 3cx
     restart: unless-stopped
     network_mode: host
     environment:
       - TZ=America/Vancouver
-      # Optional for auto-restore if your image supports it:
-      # - CX_BACKUP_FILE=/mnt/3cx/backup.zip
-    # Many 3CX images boot systemd; these mounts help if required:
     tmpfs:
       - /tmp
       - /run
