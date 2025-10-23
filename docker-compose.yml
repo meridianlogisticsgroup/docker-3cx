@@ -1,16 +1,20 @@
-version: "3.9"
+version: '3.9'
 
 services:
   3cx:
-    image: ghcr.io/jamesits/3cx:15.5  # Prebuilt 3CX v15.5 image
+    image: 3cx/3cx:18.0.3.304  # Official 3CX Docker image for version 18
     container_name: 3cx
     privileged: true
     restart: unless-stopped
+    environment:
+      - SERVER_IP=0.0.0.0           # Bind the server to all network interfaces
+      - DATABASE_PASSWORD=secretpassword  # Set your own password here
     ports:
       - "5000-5099:5000-5099"         # HTTP ports for management and SIP
       - "9000-10999:9000-10999/udp"   # SIP and RTP UDP ports
-    dns:
-      - "1.1.1.1"  # Set DNS (use Cloudflare DNS here)
+      - "5060:5060/udp"               # SIP port (UDP)
+      - "5061:5061/tcp"               # SIP port (TCP)
+      - "5001:5001"                   # HTTPS port for the management console
     volumes:
       - 3cx-data:/var/lib/3cxpbx  # Persist data
 
