@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     ports:
       - "5001:5001/tcp"
-      - "5015:5015/tcp"
+      - ":5015/tcp"
       - "5060:5060/udp"
       - "5060:5060/tcp"
       - "5061:5061/tcp"
