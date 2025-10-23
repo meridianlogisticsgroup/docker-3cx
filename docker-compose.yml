@@ -1,22 +1,27 @@
-version: '3.9'
+version: "3.9"
 
 services:
   3cx:
-    image: 3cx/3cx:18.0.3.304  # Official 3CX Docker image for version 18
+    image: izerxyz/3cx:latest   # or pin a tag from Docker Hub
     container_name: 3cx
-    privileged: true
     restart: unless-stopped
+    network_mode: host
     environment:
-      - SERVER_IP=0.0.0.0           # Bind the server to all network interfaces
-      - DATABASE_PASSWORD=secretpassword  # Set your own password here
-    ports:
-      - "5000-5099:5000-5099"         # HTTP ports for management and SIP
-      - "9000-10999:9000-10999/udp"   # SIP and RTP UDP ports
-      - "5060:5060/udp"               # SIP port (UDP)
-      - "5061:5061/tcp"               # SIP port (TCP)
-      - "5001:5001"                   # HTTPS port for the management console
+      - TZ=America/Vancouver
+      # Optional for auto-restore if your image supports it:
+      # - CX_BACKUP_FILE=/mnt/3cx/backup.zip
+    # Many 3CX images boot systemd; these mounts help if required:
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
     volumes:
-      - 3cx-data:/var/lib/3cxpbx  # Persist data
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - 3cx_var:/var/lib/3cxpbx
+      - 3cx_etc:/etc/3cxpbx
+      - 3cx_mnt:/mnt/3cx
 
 volumes:
-  3cx-data:
+  3cx_var:
+  3cx_etc:
+  3cx_mnt:
